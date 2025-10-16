@@ -15,9 +15,13 @@ const borrowSchema=new mongoose.Schema({
         ref:"Book",
         required:true
     },
-    bookReturned:{
-        type:Boolean,
-        default:false,
+    borrowedAt:{
+        type:Date,
+        default:Date.now()
+    },
+    returnedAt:{
+        type:Date,
+        
     }
 })
 const Borrow=mongoose.model("Borrow",borrowSchema)

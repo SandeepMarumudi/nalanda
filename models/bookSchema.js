@@ -26,6 +26,10 @@ const bookSchema=new mongoose.Schema({
     copies:{
         type:Number,
         required:[true,"please enter no of copies"]
+    },
+    availableCopies:{
+        type:Number,
+        default:1
     }
 
 })
