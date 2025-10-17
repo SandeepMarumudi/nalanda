@@ -11,38 +11,15 @@ const app=express()
 app.use(express.json())
 app.use(cookieParser())
 
-
-
 app.use("/api/auth",authRouter)
 app.use("/api/book",bookRouter)
 app.use("/api",borrowRouter)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 connectDB()
 .then(()=>{
     console.log("database successfully connected")
-    app.listen(8000,()=>{
+    app.listen(process.env.PORT,()=>{
         console.log("server started on 8000")
     }) 
 })
