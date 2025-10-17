@@ -1,4 +1,4 @@
-const connectDB = require("./dataBase/dataBAse");
+const connectDB = require("./dataBase/dataBase");
 const express=require("express");
 const authRouter = require("./routes/auth");
 const cookieParser=require("cookie-parser");
