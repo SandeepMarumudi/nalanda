@@ -42,7 +42,7 @@ app.use("/api",borrowRouter)
 connectDB()
 .then(()=>{
     console.log("database successfully connected")
-    app.listen("8000",()=>{
+    app.listen(8000,()=>{
         console.log("server started on 8000")
     }) 
 })
