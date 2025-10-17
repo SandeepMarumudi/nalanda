@@ -1,3 +1,4 @@
+const { json } = require("express")
 const Book = require("../models/bookSchema")
 const Borrow = require("../models/borrowSchema")
 const { findById } = require("../models/userSchema")
@@ -68,4 +69,112 @@ const borrowHistory=async(req,res)=>{
     }
 }
 
-module.exports={borrowBook,returnBook,borrowHistory}
+const mostBorrowedBook=async(req,res)=>{
+    try{
+        if(req.user.role!=="admin") return res.status(403).json({message:"Access denied"})
+        const result=await Borrow.aggregate(
+         [
+  {
+    $group:{
+      _id:"$book",
+      borrowCount:{
+        $sum:1
+      }
+    }
+  },
+  {
+    $sort:{
+      borrowCount:-1
+    }
+  },
+  {
+    $lookup: {
+      from:'books',
+      localField:"_id",
+      foreignField:"_id",
+      as: "bookDetails"
+    }
+  },
+    {
+      $unwind: "$bookDetails"
+    },
+  {
+    $project:{
+      _id:0,
+      author:"$bookDetails.author",
+      title:"$bookDetails.title",
+      borrowCount:1
+    }
+  
+    }
+  
+]
+        )
+        res.status(400).json({total:result.length,result})
+
+    }catch(err){
+     res.status(400).json({error:err.message})
+    }
+}
+
+const mostActiveMember=async(req,res)=>{
+    try{
+        if(req.user.role!=="admin") return res.status(403).json({message:"Access denied"})
+
+            const report=await Borrow.aggregate(
+                [
+                    {
+                        $group:{
+                            _id:"$user",
+                            borrowCount:{
+                                $sum:1
+                            }
+                        }
+                    },
+                    {
+                        $sort:{
+                            borrowCount:-1
+                        }
+                    },
+                    {
+                        $lookup:{
+                            from:"users",
+                            localField:"_id",
+                            foreignField:"_id",
+                            as:"userDetails"
+                        }
+                    },
+                    {
+                        $unwind:"$userDetails"
+                    },
+                    {
+                        $project:{
+                            _id:0,
+                            name:"$userDetails.name",
+                            email:"$userDetails.email",
+                            borrowCount:1
+                        }
+                    }
+
+                ]
+            )
+            res.status(200).json({total:report.length,report})
+
+    }catch(err){
+        res.status(400).json({error:err.message})
+    }
+}
+
+const summaryReport=async(req,res)=>{
+    try{
+        if(req.user.role!=="admin") return res.status(403).json({message:"Access denied"})
+        const totalBooks=await Book.countDocuments()
+        const borrowed=await Borrow.countDocuments({returnedAt:{$exists:false}})
+        const availableBooks=totalBooks-borrowed
+        res.status(200).json({totalBooks,borrowed,availableBooks})
+    }catch(err){
+        res.status(400).json({error:err.message})
+    }
+}
+
+module.exports={borrowBook,returnBook,borrowHistory,mostBorrowedBook,mostActiveMember,summaryReport}
