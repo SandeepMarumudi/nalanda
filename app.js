@@ -19,7 +19,7 @@ app.use("/api",borrowRouter)
 connectDB()
 .then(()=>{
     console.log("database successfully connected")
-    app.listen(process.env.PORT || 5000,()=>{
+    app.listen(process.env.PORT,()=>{
         console.log("server started on 8000")
     }) 
 })
