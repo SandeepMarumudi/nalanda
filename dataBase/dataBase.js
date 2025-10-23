@@ -8,4 +8,5 @@ const connectDB=async()=>{
      throw new Error(err.message)
     } 
 }
+
 module.exports=connectDB

@@ -30,6 +30,4 @@ https://github.com/SandeepMarumudi/nalanda.git
 npm install
 npm start
 
-MONGO_URL=mongodb://localhost:27017/library
-JWT_SECRET=Library2242
-PORT=8000
+

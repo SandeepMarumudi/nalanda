@@ -4,6 +4,7 @@ const authRouter = require("./routes/auth");
 const cookieParser=require("cookie-parser");
 const bookRouter = require("./routes/book");
 const borrowRouter = require("./routes/borrow");
+require("dotenv").config()
 
 
 
