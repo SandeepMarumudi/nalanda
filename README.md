@@ -33,7 +33,7 @@ npm start
 
 ## to check apis
 
-register-https://nalanda-lib.onrender.com/auth/register
+register-https://nalanda-lib.onrender.com/api/auth/register
 login-https://nalanda-lib.onrender.com/api/auth/login
 logout-https://nalanda-lib.onrender.com/api/auth/logout
 addbook-https://nalanda-lib.onrender.com//api/book/addBook
